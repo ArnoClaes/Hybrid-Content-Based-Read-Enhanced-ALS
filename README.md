@@ -1,4 +1,4 @@
-# Hybrid-Content-Based-Read-Enhanced-ALS
+# Implicit Hybrid Content Based Read Enhanced ALS
 This is the private repository made by:
 - [Lennert Aerts](https://www.linkedin.com/in/lennert-aerts-962a10b3/)
 - [Arno Claes](https://www.linkedin.com/in/arno-claes-948994133/)
