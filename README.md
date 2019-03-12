@@ -44,5 +44,5 @@ The main calculations of the Doc2Vec algorithm are done in [Item Similarity](htt
 The output of the [Item Similarity](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ItemSimilarity.ipynb) algorithm, is a single, square matrix with the dimension equal to the number of unique articles. 
 
 
-![Item Similarity Output](http://prntscr.com/mwxguh "Ouput I-S")
+![Item Similarity Output](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Pics/Simmatrix.png "Ouput I-S")
  
