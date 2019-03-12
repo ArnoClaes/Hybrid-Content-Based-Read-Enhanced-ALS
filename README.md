@@ -1,4 +1,4 @@
-# Implicit Hybrid Content Based Read Enhanced ALS
+# Implicit Modular Hybrid Recommender System with Doc2Vec and Read Enhanced ALS Modules
 This is the private repository made by:
 - [Lennert Aerts](https://www.linkedin.com/in/lennert-aerts-962a10b3/)
 - [Arno Claes](https://www.linkedin.com/in/arno-claes-948994133/)
