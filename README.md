@@ -4,6 +4,7 @@ This is the private repository made by:
 - [Arno Claes](https://www.linkedin.com/in/arno-claes-948994133/)
 - [Dana de Leeuw](https://www.linkedin.com/in/dana-de-leeuw/)
 - [Erine de Leeuw](https://www.linkedin.com/in/erine-de-leeuw-89a446b6/)
+
 This readme will explain first the main algorithms and their inputs/outputs. Next the side-calculations, such as bias, are introduced.
 
 ## The main algorithm
@@ -30,7 +31,7 @@ The first step is to manually scrape the raw text from all the URLS and scrape t
 | url_1 | title_1 | x minuten | date_1 | tag_1 | "Etiam faucibus iaculis lorem sit..." |
 | url_2 | title_1 | y minuten | date_2 | tag_2 | " Duis sagittis lobortis volutpat... " |
 
-To actually make use of the READING_TIME, it is transformed to milliseconds in @ViewRead.ipynb:
+To actually make use of the READING_TIME, it is transformed to milliseconds in [ViewRead](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ViewRead.ipynb):
 ```python
 def transform_ms(input): #Transform all the 'x minuten' to actual milliseconds
   output = int(re.sub("[^0-9.]", "",input)) * 60000 #transform required reading time to milliseconds
