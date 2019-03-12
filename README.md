@@ -47,9 +47,10 @@ The output of the [Item Similarity](https://github.com/ArnoClaes/Hybrid-Content-
 ![Item Similarity Output](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Pics/Simmatrix.png "Ouput I-S")
  
  ### 2. Collaborative Filtering
- Our collaborative filtering method is an extension on the View Enhanced Matrix Factorization introduced by [Dinget al. (2018)](https://github.com/dingjingtao/View_enhanced_ALS). The main differences are:
+ Our collaborative filtering method is an extension on the View Enhanced Matrix Factorization introduced by [Ding et al. (2018)](https://github.com/dingjingtao/View_enhanced_ALS). The main differences are:
  - Application to informative article database instead of e-commerce platform
  - Modification of the optimization algorithm, ensuring a more robust convergence
  - Different evaluation, using Self-Normalizing Inverse Propensity Score
  
+ #### Data cleaning
  
