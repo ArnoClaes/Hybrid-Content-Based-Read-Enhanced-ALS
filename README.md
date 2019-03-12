@@ -16,7 +16,7 @@ The raw input data consists out of 3 types:
 
 Mind that all the data given below is completely fictional, as the real data is protected for privacy reasons.
 
-### 1. Article Data
+### 1. Content Based
 The URL list has the following lay-out:
 
 | URL | TAG |
@@ -45,4 +45,11 @@ The output of the [Item Similarity](https://github.com/ArnoClaes/Hybrid-Content-
 
 
 ![Item Similarity Output](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Pics/Simmatrix.png "Ouput I-S")
+ 
+ ### 2. Collaborative Filtering
+ Our collaborative filtering method is an extension on the View Enhanced Matrix Factorization introduced by [Dinget al. (2018)](https://github.com/dingjingtao/View_enhanced_ALS). The main differences are:
+ - Application to informative article database instead of e-commerce platform
+ - Modification of the optimization algorithm, ensuring a more robust convergence
+ - Different evaluation, using Self-Normalizing Inverse Propensity Score
+ 
  
