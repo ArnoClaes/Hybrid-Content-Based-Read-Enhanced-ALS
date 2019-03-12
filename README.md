@@ -31,12 +31,14 @@ The first step is to manually scrape the raw text from all the URLS and scrape t
 | url_1 | title_1 | x minuten | date_1 | tag_1 | "Etiam faucibus iaculis lorem sit..." |
 | url_2 | title_1 | y minuten | date_2 | tag_2 | " Duis sagittis lobortis volutpat... " |
 
-To actually make use of the READING_TIME, it is transformed to milliseconds in [ViewRead](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ViewRead.ipynb):
+To actually make use of the READING_TIME, it is transformed to milliseconds in [ViewRead](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ViewRead.ipynb), although this parameter is not further used for the content-based part:
 ```python
 def transform_ms(input): #Transform all the 'x minuten' to actual milliseconds
   output = int(re.sub("[^0-9.]", "",input)) * 60000 #transform required reading time to milliseconds
   return output
 ```
+
+The main calculations of the Doc2Vec algorithm are done in [Item Similarity](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ItemSimilarity.ipynb).
 
 
  
