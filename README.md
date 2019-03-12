@@ -58,6 +58,13 @@ The output of the [Item Similarity](https://github.com/ArnoClaes/Hybrid-Content-
  The output of [Data Cleaning](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/DataCleaner.ipynb) are two files:
  1) Clean Page Data
  
+| URL | clientid_hashed | visitid | visitstarttime | hitnumber | time | channelgrouping | browser | devicecategory | BiebYN |
+| :-------------: | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: |
+| url_1 | 5sdf45sdf654sdf | 45654512 | 2018-09-13 22:10:20 | 5 | 568181 | Organic | Safari | desktop | 1 |
+| url_2 | 789sd1fzxkj4fgh | 78974982 | 2018-11-22 19:55:58 | 1 | 0 | Email | Chrome | mobile | 0 |
+ 
+ Where BiebYN is an indicator if the **URL** is part of the Bieb platform.
+ 
  2) Clean Event Data
  
 | URL | clientid_hashed | visitid | visitstarttime | hitnumber | eventcategory | eventlabel |
