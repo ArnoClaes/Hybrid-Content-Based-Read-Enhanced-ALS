@@ -17,6 +17,10 @@ The raw input data consists out of 3 types:
 Mind that all the data given below is completely fictional, as the real data is protected for privacy reasons.
 
 ### 1. Content Based
+
+The content based part consists out of gathering article data, creating the similarity matrix and calculating the popularity of each article.
+
+#### Gathering Data
 The URL list has the following lay-out:
 
 | URL | TAG |
@@ -37,7 +41,7 @@ def transform_ms(input): #Transform all the 'x minuten' to actual milliseconds
   output = int(re.sub("[^0-9.]", "",input)) * 60000 #transform required reading time to milliseconds
   return output
 ```
-
+#### Creating Similarity Matrix
 The main calculations of the Doc2Vec algorithm are done in [Item Similarity](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ItemSimilarity.ipynb), where the input is the **TEXT** column. In this script, the text is first tokenized and next these tokens are used to train the Doc2Vec. The Doc2Vec model also uses pre-embedded words ([Wikipedia-320](http://www.clips.uantwerpen.be/dutchembeddings/wikipedia-320.tar.gz), thanks to [Embedding_GitHub](https://github.com/clips/dutchembeddings)) to kick-start the training.           
 *Note that these word-embeddings are Dutch words only.*
 
@@ -45,6 +49,8 @@ The output of the [Item Similarity](https://github.com/ArnoClaes/Hybrid-Content-
 
 
 ![Item Similarity Output](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Pics/Simmatrix.png "Ouput I-S")
+ 
+ #### Popularity Score
  
  ### 2. Collaborative Filtering
  Our collaborative filtering method is an extension on the View Enhanced Matrix Factorization introduced by [Ding et al. (2018)](https://github.com/dingjingtao/View_enhanced_ALS). The main differences are:
@@ -54,7 +60,7 @@ The output of the [Item Similarity](https://github.com/ArnoClaes/Hybrid-Content-
  
  #### Data cleaning
  In [Data Cleaning](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/DataCleaner.ipynb), the biggest of the data cleaning process is performed. The inputs are 3 raw data files, given above. The first step is to put all seperate click-stream files together and formatting all the variables to either *string, integer, datetime, etc.* .
- Another crucial step is removing all the duplicate URLs. Often two back-end URLs are given in the click-stream data, leading to the same webpage. Because the all the URLs were already scraped, it is possible to remove the duplicates using the **TITLE**. To properly clean-up this step, all the NaNs created in dropping duplicates are removed.
+ Another crucial step is removing all the duplicate URLs. Often two back-end URLs are given in the click-stream data, leading to the same webpage. Because the all the URLs were already scraped, it is possible to remove the duplicates using the **TITLE**. To properly clean-up this step, all the *NaNs* created in dropping duplicates are removed.
  The output of [Data Cleaning](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/DataCleaner.ipynb) are two files:
  1) Clean Page Data
  
@@ -71,3 +77,5 @@ The output of the [Item Similarity](https://github.com/ArnoClaes/Hybrid-Content-
 | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: |
 | url_1 | 5sdf45sdf654sdf | 45654512 | 2018-09-13 22:10:20 | 5 | timer | 30000 |
 | url_2 | 789sd1fzxkj4fgh | 78974982 | 2018-11-22 19:55:58 | 1 | Scroll Depth | 50% | 
+
+
