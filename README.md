@@ -158,6 +158,7 @@ The output of the [View Read](https://github.com/ArnoClaes/Hybrid-Content-Based-
 | url_1 | sdf52fgd5s | 0.9 |
 | url_2 | adsf4561fg | 0.5 |
 
+---
 </td><td>
 
 | URL | clientid_hashed | clicked |
@@ -165,18 +166,5 @@ The output of the [View Read](https://github.com/ArnoClaes/Hybrid-Content-Based-
 | url_1 | qkdcv5923q | 1 |
 | url_2 | opghfma179 | 1 |
 
+---
 </td></tr> </table>
-
-***read_pairs.csv***    
-
-| URL | clientid_hashed | Confidence_level |
-| :-------------: | :-------------: | :-------------: |
-| url_1 | sdf52fgd5s | 0.9 |
-| url_2 | adsf4561fg | 0.5 |
-
-***clicked_pairs.csv***    
-
-| URL | clientid_hashed | clicked |
-| :-------------: | :-------------: | :-------------: |
-| url_1 | qkdcv5923q | 1 |
-| url_2 | opghfma179 | 1 |
