@@ -18,11 +18,19 @@ The raw input data consists out of 3 types:
 Mind that all the data given below is completely fictional, as the real data is protected for privacy reasons.
 
 The programs used in the main algorithm are, in order:  
-[Item Similarity](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ItemSimilarity.ipynb)  
-[Item Popularity](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ItemPopularity.ipynb)  
-[Data Cleaner](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/DataCleaner.ipynb)  
-[Time on Page](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/TimeOnPage.ipynb)   
-[View Read](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ViewRead.ipynb)
+
+| Algorithm | Input | Output |
+| :-------------: | :-------------: | :-------------: |
+| [Item Similarity](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ItemSimilarity.ipynb) | <ul><li style="text-align: left">***clean_article_data.csv***</li><li style="text-align: left">[Embeddings](http://www.clips.uantwerpen.be/dutchembeddings/wikipedia-320.tar.gz)</li></ul>| [Similarity Matrix](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Pics/Simmatrix.png "Ouput I-S") |
+| [Item Popularity](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ItemPopularity.ipynb) | <ul><li style="text-align: left">***clean_article_data.csv***</li><li style="text-align: left">***clean_page_data.csv***</li></ul> | ***Popularity_score.csv*** |
+| [Data Cleaner](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/DataCleaner.ipynb) | All raw data | <ul><li style="text-align: left">***clean_page_data.csv***</li><li style="text-align: left">***clean_event_data.csv***</li></ul> |
+| [Time on Page](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/TimeOnPage.ipynb) |||
+| [View Read](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ViewRead.ipynb) | | |
+
+
+
+
+
 
 
 ### 1. Content Based
@@ -37,7 +45,7 @@ The URL list has the following lay-out:
 | url_1  | tag_1  |
 | url_2  | tag_1  |
 
-The first step is to manually scrape the raw text from all the URLS and scrape the TITLE, READING_TIME and DATE (publish) from the pages using a HTML webscraper. All these steps were manually combined in an excel file. After the merging, the data will look as follows:
+The first step is to manually scrape the raw text from all the URLS and scrape the TITLE, READING_TIME and DATE (publish) from the pages using a HTML web scraper. All these steps were manually combined in an excel file. After the merging, the data will look as follows:
 
  ***clean_article_data.csv***
 
@@ -147,7 +155,7 @@ df_clean_page_data.loc[(df_clean_page_data['time_on_page'] > (df_clean_page_data
                                                                       & (df_clean_page_data['time_on_page'] <= (df_clean_page_data["READING_TIME"])*maxread))), "ReadYN"]) = 1
 ```
 
-The output of the [View Read](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ViewRead.ipynb) algorithm, are two dataframes:
+The output of the [View Read](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ViewRead.ipynb) algorithm, are two dataframes for both read pairs and click pairs. Note that these two dataframes have an empty intersection.
 
 <table>
 <tr><th>read_pairs.csv   </th><th>clicked_pairs.csv  </th></tr>
@@ -168,4 +176,5 @@ The output of the [View Read](https://github.com/ArnoClaes/Hybrid-Content-Based-
 </td></tr> </table>
 
 #### Fast ALS
-Most of the computationally expensive calculations are done in [Fast ALS](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/FastALS.ipynb), which takes as input the ******
+Most of the computationally expensive calculations are done in [Fast ALS](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/FastALS.ipynb), which takes as input: ***read_pairs.csv***, ***clicked_pairs.csv*** and ***clean_article_data.csv***.
+When training the ALS algorithm, only the users with the 7 or more articles read are taken into account.  
