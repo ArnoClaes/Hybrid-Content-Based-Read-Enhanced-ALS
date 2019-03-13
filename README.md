@@ -63,6 +63,7 @@ def transform_ms(input): #Transform all the 'x minuten' to actual milliseconds
   return output
 ```
 #### Creating Similarity Matrix
+
 The main calculations of the Doc2Vec algorithm are done in [Item Similarity](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ItemSimilarity.ipynb), where the input is the **TEXT** column. In this script, the text is first tokenized and next these tokens are used to train the Doc2Vec. The Doc2Vec model also uses pre-embedded words ([Wikipedia-320](http://www.clips.uantwerpen.be/dutchembeddings/wikipedia-320.tar.gz), thanks to [Embedding_GitHub](https://github.com/clips/dutchembeddings)) to kick-start the training.           
 *Note that these word-embeddings are Dutch words only.*
 
@@ -71,6 +72,7 @@ The output of the [Item Similarity](https://github.com/ArnoClaes/Hybrid-Content-
 ![Item Similarity Output](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Pics/Simmatrix.png "Ouput I-S")
 
  #### Popularity Score
+
  The last step in the content-based part, is the calculation of the popularity score. This score will be used to scale the similarity. When the Collaborative Filtering threshold is not met, the more popular items are upsized. When, on the contrary, the threshold is met, we aim to push less popular items: **novelty**.
 
 The weight vector that is the output of [Item Popularity](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ItemPopularity.ipynb) has one weight per article. The input of this algorithm are the datafiles containing URL information and page-click-data. These have to be merged to be able to output the titles, which are not given in the page data. This merge step is not crucial for the good continuance of the algorithm, but provides insight to which articles are the most read.
@@ -91,7 +93,9 @@ The next step is counting all the occurrences of every article and providing a p
 | title_1 | url_1 | 15132 | 0.986751 |
 | title_2 | url_2 | 532 | 0.054351 |
 
+
  ### 2. Collaborative Filtering
+
  Our collaborative filtering method is an extension on the View Enhanced Matrix Factorization introduced by [Ding et al. (2018)](https://github.com/dingjingtao/View_enhanced_ALS). The main differences are:
  - Application to informative article database instead of e-commerce platform
  - Modification of the optimization algorithm, ensuring a more robust convergence
@@ -100,6 +104,7 @@ The next step is counting all the occurrences of every article and providing a p
 To properly be able to use the data, first it has to be cleaned and some extra variables have to be added.
 
  #### Data cleaning
+
  In [Data Cleaner](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/DataCleaner.ipynb), the biggest of the data cleaning process is performed. The inputs are 3 raw data files, given above. The first step is to put all seperate click-stream files together and formatting all the variables to either *string, integer, datetime, etc.* .
  Another crucial step is removing all the duplicate URLs. Often two back-end URLs are given in the click-stream data, leading to the same webpage. Because the all the URLs were already scraped, it is possible to remove the duplicates using the **TITLE**. To properly clean-up this step, all the *NaNs* created in dropping duplicates are removed.
  The output of the [Data Cleaner](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/DataCleaner.ipynb) are two files:
@@ -182,3 +187,26 @@ Most of the computationally expensive calculations are done in [Fast ALS](https:
 When training the ALS algorithm, only the users with the 7 or more articles read are taken into account, to reduce sparsity.  
 The explanation of the ALS algorithm is out of the scope of this README. For more technical information we refer to the [paper](https://www.researchgate.net/publication/331716098_A_Novel_Implicit_Hybrid_Article_Recommender_System_with_an_Application_on_the_Financial_Article_Database_'Bieb'_from_Knab) and [Ding et al. (2018)](https://github.com/dingjingtao/View_enhanced_ALS). The outputs are:
 ***client_list_CF.csv*** and ***item_list_CF***, which are the look-up tables, as the original client lists are cropped. The matrices of factors are also outputted in npz-files: ***P.npz*** and ***Q.npz***. The dimensions of these matrices are [#users x #factors] and [#items x #factors], respectively.
+
+## Hybrid model
+All the aforementioned algorithms lead to the combination in [Hybrid_model](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/Hybrid_model.ipynb)
+
+## Secondary calculations
+Next to finding the most profitable recommendations, some extra calculations had to be performed to ensure the cleanliness of the data. In [Data Explore](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/Side%20Algorithms/DataExplore.ipynb), which takes a input the raw page, event and URL data; some basic exploratory research is done.
+
+####  Bias
+Since our data is directly based on a previous recommendation system, one could assume there to be a bias due to the old recommendation system. To calculate this bias, two steps have to be taken:  
+
+1) Find the old recommendations  
+2) Find out whether people have seen the recommendations  
+3) Calculate the bias
+
+The first step is done in [Evaluation Finder](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/Side%20Algorithms/Recommendation_finder.ipynb). The input is given as ***merged_data.csv***, which is a merge of the ***clean_page_data.csv*** and the **TITLE** of ***clean_article_data.csv***. As we know the previous scheme of the old recommendation system, it is possible to calculate the recommendations that the user would have seen. The output of this program, ***data_recommendations.csv***, is the same ***merged_data.csv*** with an extra variable **old_recommendations**, which provides the URLs of the old recommendations.
+
+The second step is done by merging the ***clean_page_data.csv*** and ***clean_event_data.csv*** and finding for **clientid_hashed** and **URL** what the highest **eventlabel** is. When the **eventlabel**s contain either *75%*, *100%* or *read end article*; it is stated that the recommendation on that page was seen.
+
+The last step is done in [Bias](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/Side%20Algorithms/Bias.ipynb). Here both the outputs of the earlier steps are inputted, together with ***clean_page_data.csv***. The bias is calculated by finding the difference between the number clicked when recommended and the number clicked when not recommended.
+Since the bias was found to be not-significantly different from zero, no further implications were made on the rest of the algorithms.
+
+#### Conversion to commercial site
+It might be of managerial importance to know which articles flow most through to the commercial part of the website. This is done in
