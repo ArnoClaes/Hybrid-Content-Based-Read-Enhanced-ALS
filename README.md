@@ -122,5 +122,27 @@ In this manner it is very efficient to calculate the time spent on a page, by si
 | url_1 | 5sdf45sdf654sdf | 45654512 | 2018-09-13 22:10:20 | 0 | 0 | Organic | Safari | desktop | 1 | 568181 |
 | url_2 | 5sdf45sdf654sdf | 45654512 | 2018-09-13 22:10:20 | 1 | 568181 | Organic | Safari | desktop | 0 | 0 |
 
-This output is in turn, together with ***clean_event_data.csv*** and ***clean_article_data***, the input of [View Read](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ViewRead.ipynb), which aims to predict whether a user has actually read the article. When a user has spent less than 50% of the estimated **READING_TIME**, the entry is labeled with **ReadYN** equal to zero. When the user has spent more than 125% of the estimated **READING_TIME**, the label is set to one.   
+This output is in turn, together with ***clean_event_data.csv*** and ***clean_article_data.csv***, the input of [View Read](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ViewRead.ipynb), which aims to predict whether a user has actually read the article. When a user has spent less than 50% of the estimated **READING_TIME**, the entry is labeled with **ReadYN** equal to zero. When the user has spent more than 125% of the estimated **READING_TIME**, the label is set to one.   
 When the **delta_time** falls between these two values, the ***clean_event_data.csv*** is used to give more information on the page visit. When the **eventlabel** for the same **clientid_hashed**, **visitid** and **URL** contains *read end article*, *75%* or *50%* the **ReadYN** dummy is set to one. To provide next steps with proper weights, the **Confidence_level** variable is made and set to one, given the **READING_TIME** exceeds 125%. The other **Confidence_level** values are 0.9, 0.8 and 0.5, respectively.  
+
+```python
+#Define confidences
+df_event_subset.loc[df_event_subset['eventlabel'] == 'read end article', 'Confidence_level'] = 0.9
+df_event_subset.loc[df_event_subset['eventlabel'] == '100%', 'Confidence_level'] = 0.8
+df_event_subset.loc[df_event_subset['eventlabel'] == '75%', 'Confidence_level'] = 0.5
+```
+```python
+minread = 0.5 #minimum percentage of article reading time
+maxread = 1.25 #maximum percentage of article reading time
+
+#Condition 1
+df_clean_page_data.loc[(df_clean_page_data['time_on_page'] < (df_clean_page_data["READING_TIME"])*minread) & (df_clean_page_data['time_on_page'] != -1), "ReadYN"] = 0
+
+#Condition 2
+df_clean_page_data.loc[(df_clean_page_data['time_on_page'] > (df_clean_page_data["READING_TIME"])*maxread), "ReadYN"] = 1
+df_clean_page_data.loc[(df_clean_page_data['time_on_page'] > (df_clean_page_data["READING_TIME"])*maxread), "Confidence_level"] = 1
+
+#Condition 3
+(df_clean_page_data.loc[df_clean_page_data['eventlabel'].notnull() & ((df_clean_page_data['time_on_page'] == -1) | ((df_clean_page_data['time_on_page'] >= (df_clean_page_data["READING_TIME"])*minread)
+                                                                      & (df_clean_page_data['time_on_page'] <= (df_clean_page_data["READING_TIME"])*maxread))), "ReadYN"]) = 1
+```
