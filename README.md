@@ -146,3 +146,37 @@ df_clean_page_data.loc[(df_clean_page_data['time_on_page'] > (df_clean_page_data
 (df_clean_page_data.loc[df_clean_page_data['eventlabel'].notnull() & ((df_clean_page_data['time_on_page'] == -1) | ((df_clean_page_data['time_on_page'] >= (df_clean_page_data["READING_TIME"])*minread)
                                                                       & (df_clean_page_data['time_on_page'] <= (df_clean_page_data["READING_TIME"])*maxread))), "ReadYN"]) = 1
 ```
+
+The output of the [View Read](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ViewRead.ipynb) algorithm, are two dataframes:
+
+<table>
+<tr><th>***read_pairs.csv***   </th><th>***clicked_pairs.csv***  </th></tr>
+<tr><td>
+
+| URL | clientid_hashed | Confidence_level |
+| :-------------: | :-------------: | :-------------: |
+| url_1 | sdf52fgd5s | 0.9 |
+| url_2 | adsf4561fg | 0.5 |
+
+</td><td>
+
+| URL | clientid_hashed | clicked |
+| :-------------: | :-------------: | :-------------: |
+| url_1 | qkdcv5923q | 1 |
+| url_2 | opghfma179 | 1 |
+
+</td></tr> </table>
+
+***read_pairs.csv***    
+
+| URL | clientid_hashed | Confidence_level |
+| :-------------: | :-------------: | :-------------: |
+| url_1 | sdf52fgd5s | 0.9 |
+| url_2 | adsf4561fg | 0.5 |
+
+***clicked_pairs.csv***    
+
+| URL | clientid_hashed | clicked |
+| :-------------: | :-------------: | :-------------: |
+| url_1 | qkdcv5923q | 1 |
+| url_2 | opghfma179 | 1 |
