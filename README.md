@@ -5,6 +5,7 @@ This is the private repository made by:
 - [Dana de Leeuw](https://www.linkedin.com/in/dana-de-leeuw/)
 - [Erine de Leeuw](https://www.linkedin.com/in/erine-de-leeuw-89a446b6/)
 
+The repository keeps all the programs, used for the calculations published in [A Novel Implicit Hybrid Article Recommender System with an Application on the Financial Article Database 'Bieb' from Knab](https://www.researchgate.net/publication/331716098_A_Novel_Implicit_Hybrid_Article_Recommender_System_with_an_Application_on_the_Financial_Article_Database_'Bieb'_from_Knab).  
 This readme will explain first the main algorithms and their inputs/outputs. Next the side-calculations, such as bias, are introduced.
 
 ## The main algorithm
@@ -17,15 +18,16 @@ The raw input data consists out of 3 types:
 
 Mind that all the data given below is completely fictional, as the real data is protected for privacy reasons.
 
-The programs used in the main algorithm are, in order:  
+The programs used in the main algorithm are:  
 
 | Algorithm | Input | Output |
 | :-------------: | :-------------: | :-------------: |
 | [Item Similarity](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ItemSimilarity.ipynb) | <ul><li style="text-align: left">***clean_article_data.csv***</li><li style="text-align: left">[Embeddings](http://www.clips.uantwerpen.be/dutchembeddings/wikipedia-320.tar.gz)</li></ul>| [Similarity Matrix](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Pics/Simmatrix.png "Ouput I-S") |
 | [Item Popularity](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ItemPopularity.ipynb) | <ul><li style="text-align: left">***clean_article_data.csv***</li><li style="text-align: left">***clean_page_data.csv***</li></ul> | ***Popularity_score.csv*** |
 | [Data Cleaner](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/DataCleaner.ipynb) | All raw data | <ul><li style="text-align: left">***clean_page_data.csv***</li><li style="text-align: left">***clean_event_data.csv***</li></ul> |
-| [Time on Page](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/TimeOnPage.ipynb) |||
-| [View Read](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ViewRead.ipynb) | | |
+| [Time on Page](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/TimeOnPage.ipynb) | ***clean_page_data.csv*** | ***time_delta.csv*** |
+| [View Read](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ViewRead.ipynb) | <ul><li style="text-align: left">***time_delta.csv***</li><li style="text-align: left">***clean_page_data.csv***</li><li style="text-align: left">***clean_event_data.csv***</li></ul> | <ul><li style="text-align: left">***read_pairs.csv***</li><li style="text-align: left">***clicked_pairs.csv***</li></ul> |
+| [Fast ALS](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/FastALS.ipynb) | <ul><li style="text-align: left">***read_pairs.csv***</li><li style="text-align: left">***clicked_pairs.csv***</li></ul> | <ul><li style="text-align: left">***P.npz***</li><li style="text-align: left">***Q.npz***</li></ul><ul><li style="text-align: left">***client_list_CF.csv***</li><li style="text-align: left">***item_list_CF.csv***</li></ul> |
 
 
 
@@ -177,4 +179,6 @@ The output of the [View Read](https://github.com/ArnoClaes/Hybrid-Content-Based-
 
 #### Fast ALS
 Most of the computationally expensive calculations are done in [Fast ALS](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/FastALS.ipynb), which takes as input: ***read_pairs.csv***, ***clicked_pairs.csv*** and ***clean_article_data.csv***.
-When training the ALS algorithm, only the users with the 7 or more articles read are taken into account.  
+When training the ALS algorithm, only the users with the 7 or more articles read are taken into account, to reduce sparsity.  
+The explanation of the ALS algorithm is out of the scope of this README. For more technical information we refer to the [paper](https://www.researchgate.net/publication/331716098_A_Novel_Implicit_Hybrid_Article_Recommender_System_with_an_Application_on_the_Financial_Article_Database_'Bieb'_from_Knab) and [Ding et al. (2018)](https://github.com/dingjingtao/View_enhanced_ALS). The outputs are:
+***client_list_CF.csv*** and ***item_list_CF***, which are the look-up tables, as the original client lists are cropped. The matrices of factors are also outputted in npz-files: ***P.npz*** and ***Q.npz***. The dimensions of these matrices are [#users x #factors] and [#items x #factors], respectively.
