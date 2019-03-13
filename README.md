@@ -39,6 +39,8 @@ The URL list has the following lay-out:
 
 The first step is to manually scrape the raw text from all the URLS and scrape the TITLE, READING_TIME and DATE (publish) from the pages using a HTML webscraper. All these steps were manually combined in an excel file. After the merging, the data will look as follows:
 
+ ***clean_article_data.csv***
+
 | URL | TITLE | READING_TIME | DATE | TAG | TEXT |
 | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: |
 | url_1 | title_1 | x minuten | date_1 | tag_1 | "Etiam faucibus iaculis lorem sit..." |
@@ -72,6 +74,8 @@ df_page = df_page.assign(ArticleYN=df_page.URL.isin(df_urls.URL).astype(int))
 
 The next step is counting all the occurrences of every article and providing a popularity weight based on this count. We use a sigmoid function with upper-bound set to 1, as explained in our paper. The output of these weights look as follows:
 
+***Popularity_score.csv***
+
 | TITLE | URL | COUNT | popularity_weight |
 | :-------------: | :-------------: | :-------------: | :-------------: |
 | title_1 | url_1 | 15132 | 0.986751 |
@@ -90,7 +94,7 @@ To properly be able to use the data, first it has to be cleaned and some extra v
  Another crucial step is removing all the duplicate URLs. Often two back-end URLs are given in the click-stream data, leading to the same webpage. Because the all the URLs were already scraped, it is possible to remove the duplicates using the **TITLE**. To properly clean-up this step, all the *NaNs* created in dropping duplicates are removed.
  The output of the [Data Cleaner](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/DataCleaner.ipynb) are two files:
 
- 1) Clean Page Data
+1)  ***clean_page_data.csv***
 
 | URL | clientid_hashed | visitid | visitstarttime | hitnumber | time | channelgrouping | browser | devicecategory | BiebYN |
 | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: |
@@ -99,7 +103,7 @@ To properly be able to use the data, first it has to be cleaned and some extra v
 
  Where BiebYN is an indicator if the **URL** is part of the Bieb platform.
 
- 2) Clean Event Data
+2)  ***clean_event_data.csv***
 
 | URL | clientid_hashed | visitid | visitstarttime | hitnumber | eventcategory | eventlabel |
 | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: |
@@ -108,4 +112,5 @@ To properly be able to use the data, first it has to be cleaned and some extra v
 
 #### Read or Not Read?
 
-This part is split over two different programs. [Time on Page](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/TimeOnPage.ipynb) and [View Read](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ViewRead.ipynb)
+In this part we aim to find out which of the article visits are actually long enough, so the reader could have read the article. These calculations are split over two different programs: [Time on Page](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/TimeOnPage.ipynb) and [View Read](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ViewRead.ipynb). First, the time on page is calculated by making a copy of the clean_page_data and pasting it next to the original, shifted by one row.
+In this manner it is very efficient to calculate the time spent on a page, by simply substracting the one *time* from the other, given the **clientid_hashed** and **visitid** are the same.
