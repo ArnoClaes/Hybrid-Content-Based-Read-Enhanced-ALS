@@ -21,7 +21,7 @@ The programs used in the main algorithm are, in order:
 [Item Similarity](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ItemSimilarity.ipynb)  
 [Item Popularity](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ItemPopularity.ipynb)  
 [Data Cleaner](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/DataCleaner.ipynb)  
-[Time on Page](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/TimeOnPage.ipynb)
+[Time on Page](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/TimeOnPage.ipynb)   
 [View Read](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ViewRead.ipynb)
 
 
@@ -113,4 +113,14 @@ To properly be able to use the data, first it has to be cleaned and some extra v
 #### Read or Not Read?
 
 In this part we aim to find out which of the article visits are actually long enough, so the reader could have read the article. These calculations are split over two different programs: [Time on Page](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/TimeOnPage.ipynb) and [View Read](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ViewRead.ipynb). First, the time on page is calculated by making a copy of the clean_page_data and pasting it next to the original, shifted by one row.
-In this manner it is very efficient to calculate the time spent on a page, by simply substracting the one *time* from the other, given the **clientid_hashed** and **visitid** are the same.
+In this manner it is very efficient to calculate the time spent on a page, by simply substracting the one **time** from the other, given the **clientid_hashed** and **visitid** are the same, which outputs in:
+
+***time_delta.csv***
+
+| URL | clientid_hashed | visitid | visitstarttime | hitnumber | time | channelgrouping | browser | devicecategory | BiebYN | delta_time |
+| :-------------: | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: |
+| url_1 | 5sdf45sdf654sdf | 45654512 | 2018-09-13 22:10:20 | 0 | 0 | Organic | Safari | desktop | 1 | 568181 |
+| url_2 | 5sdf45sdf654sdf | 45654512 | 2018-09-13 22:10:20 | 1 | 568181 | Organic | Safari | desktop | 0 | 0 |
+
+This output is in turn, together with ***clean_event_data.csv*** and ***clean_article_data***, the input of [View Read](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ViewRead.ipynb), which aims to predict whether a user has actually read the article. When a user has spent less than 50% of the estimated **READING_TIME**, the entry is labeled with **ReadYN** equal to zero. When the user has spent more than 125% of the estimated **READING_TIME**, the label is set to one.   
+When the **delta_time** falls between these two values, the ***clean_event_data.csv*** is used to give more information on the page visit. When the **eventlabel** for the same **clientid_hashed**, **visitid** and **URL** contains *read end article*, *75%* or *50%* the **ReadYN** dummy is set to one. To provide next steps with proper weights, the **Confidence_level** variable is made and set to one, given the **READING_TIME** exceeds 125%. The other **Confidence_level** values are 0.9, 0.8 and 0.5, respectively.  
