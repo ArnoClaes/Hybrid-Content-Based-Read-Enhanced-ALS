@@ -17,6 +17,14 @@ The raw input data consists out of 3 types:
 
 Mind that all the data given below is completely fictional, as the real data is protected for privacy reasons.
 
+The programs used in the main algorithm are, in order:  
+[Item Similarity](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ItemSimilarity.ipynb)  
+[Item Popularity](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ItemPopularity.ipynb)  
+[Data Cleaner](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/DataCleaner.ipynb)  
+[Time on Page](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/TimeOnPage.ipynb)
+[View Read](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ViewRead.ipynb)
+
+
 ### 1. Content Based
 
 The content based part consists out of gathering article data, creating the similarity matrix and calculating the popularity of each article.
@@ -75,10 +83,13 @@ The next step is counting all the occurrences of every article and providing a p
  - Modification of the optimization algorithm, ensuring a more robust convergence
  - Different evaluation, using Self-Normalizing Inverse Propensity Score
 
+To properly be able to use the data, first it has to be cleaned and some extra variables have to be added.
+
  #### Data cleaning
- In [Data Cleaning](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/DataCleaner.ipynb), the biggest of the data cleaning process is performed. The inputs are 3 raw data files, given above. The first step is to put all seperate click-stream files together and formatting all the variables to either *string, integer, datetime, etc.* .
+ In [Data Cleaner](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/DataCleaner.ipynb), the biggest of the data cleaning process is performed. The inputs are 3 raw data files, given above. The first step is to put all seperate click-stream files together and formatting all the variables to either *string, integer, datetime, etc.* .
  Another crucial step is removing all the duplicate URLs. Often two back-end URLs are given in the click-stream data, leading to the same webpage. Because the all the URLs were already scraped, it is possible to remove the duplicates using the **TITLE**. To properly clean-up this step, all the *NaNs* created in dropping duplicates are removed.
- The output of [Data Cleaning](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/DataCleaner.ipynb) are two files:
+ The output of the [Data Cleaner](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/DataCleaner.ipynb) are two files:
+
  1) Clean Page Data
 
 | URL | clientid_hashed | visitid | visitstarttime | hitnumber | time | channelgrouping | browser | devicecategory | BiebYN |
@@ -94,3 +105,7 @@ The next step is counting all the occurrences of every article and providing a p
 | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: |
 | url_1 | 5sdf45sdf654sdf | 45654512 | 2018-09-13 22:10:20 | 5 | timer | 30000 |
 | url_2 | 789sd1fzxkj4fgh | 78974982 | 2018-11-22 19:55:58 | 1 | Scroll Depth | 50% |
+
+#### Read or Not Read?
+
+This part is split over two different programs. [Time on Page](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/TimeOnPage.ipynb) and [View Read](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ViewRead.ipynb)
