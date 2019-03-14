@@ -22,7 +22,7 @@ The programs used in the main algorithm are:
 
 | Algorithm | Input | Output |
 | :-------------: | :-------------: | :-------------: |
-| [Item Similarity](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ItemSimilarity.ipynb) | <ul><li style="text-align: left">***clean_article_data.csv***</li><li style="text-align: left">[Embeddings](http://www.clips.uantwerpen.be/dutchembeddings/wikipedia-320.tar.gz)</li></ul>| [Similarity Matrix](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Pics/Simmatrix.png "Ouput I-S") |
+| [Item Similarity](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ItemSimilarity.ipynb) | <ul><li style="text-align: left">***clean_article_data.csv***</li><li style="text-align: left">[Embeddings](http://www.clips.uantwerpen.be/dutchembeddings/wikipedia-320.tar.gz)</li></ul>| <ul><li style="text-align: left">***CB_pearson.npz***</li><li style="text-align: left">***url_CB.csv***</li></ul> |
 | [Item Popularity](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ItemPopularity.ipynb) | <ul><li style="text-align: left">***clean_article_data.csv***</li><li style="text-align: left">***clean_page_data.csv***</li></ul> | ***Popularity_score.csv*** |
 | [Data Cleaner](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/DataCleaner.ipynb) | All raw data | <ul><li style="text-align: left">***clean_page_data.csv***</li><li style="text-align: left">***clean_event_data.csv***</li></ul> |
 | [Time on Page](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/TimeOnPage.ipynb) | ***clean_page_data.csv*** | ***time_delta.csv*** |
@@ -67,7 +67,7 @@ def transform_ms(input): #Transform all the 'x minuten' to actual milliseconds
 The main calculations of the Doc2Vec algorithm are done in [Item Similarity](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ItemSimilarity.ipynb), where the input is the **TEXT** column. In this script, the text is first tokenized and next these tokens are used to train the Doc2Vec. The Doc2Vec model also uses pre-embedded words ([Wikipedia-320](http://www.clips.uantwerpen.be/dutchembeddings/wikipedia-320.tar.gz), thanks to [Embedding_GitHub](https://github.com/clips/dutchembeddings)) to kick-start the training.           
 *Note that these word-embeddings are Dutch words only.*
 
-The output of the [Item Similarity](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ItemSimilarity.ipynb) algorithm, is a single, symmetric, square matrix with the dimension equal to the number of unique articles.
+The output of the [Item Similarity](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/ItemSimilarity.ipynb) algorithm, is a single, symmetric, square matrix with the dimension equal to the number of unique articles, ***CB_pearson.npz***. Next to this similarity matrix, a lookup table is exported for the URLs: ***url_CB.csv***.
 
 ![Item Similarity Output](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Pics/Simmatrix.png "Ouput I-S")
 
@@ -189,7 +189,7 @@ The explanation of the ALS algorithm is out of the scope of this README. For mor
 ***client_list_CF.csv*** and ***item_list_CF***, which are the look-up tables, as the original client lists are cropped. The matrices of factors are also outputted in npz-files: ***P.npz*** and ***Q.npz***. The dimensions of these matrices are [#users x #factors] and [#items x #factors], respectively.
 
 ## Hybrid model
-All the aforementioned algorithms lead to the combination in [Hybrid_model](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/Hybrid_model.ipynb)
+All the aforementioned algorithms lead to the combination in [Hybrid_model](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/Hybrid_model.ipynb). The inputs to this accumulation algorithm are: ***CB_pearson.npz***, ***Popularity_score.csv***, ***url_CB.csv***, ***P.npz***, ***Q.npz***, ***client_list_CF.npz***, ***item_list_CF.npz***, ***clicked_pairs.csv*** and ***read_pairs.csv***. The exact use of all these datafiles is clearly explained in the [paper](https://www.researchgate.net/publication/331716098_A_Novel_Implicit_Hybrid_Article_Recommender_System_with_an_Application_on_the_Financial_Article_Database_'Bieb'_from_Knab).
 
 ## Secondary calculations
 Next to finding the most profitable recommendations, some extra calculations had to be performed to ensure the cleanliness of the data. In [Data Explore](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/Side%20Algorithms/DataExplore.ipynb), which takes a input the raw page, event and URL data; some basic exploratory research is done.
@@ -209,4 +209,4 @@ The last step is done in [Bias](https://github.com/ArnoClaes/Hybrid-Content-Base
 Since the bias was found to be not-significantly different from zero, no further implications were made on the rest of the algorithms.
 
 #### Conversion to commercial site
-It might be of managerial importance to know which articles flow most through to the commercial part of the website. This is done in
+It might be of managerial importance to know which articles flow most through to the commercial part of the website. This is done in [Commercial Conversion](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/Side%20Algorithms/CommercialConversion.ipynb), which takes the ***clean_page_data.csv*** and ***clean_article_data.csv*** as inputs. The conversion rate is found by utilizing the same shift-trick as in [Time on Page](https://github.com/ArnoClaes/Hybrid-Content-Based-Read-Enhanced-ALS/blob/master/Algorithms/TimeOnPage.ipynb).
