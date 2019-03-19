@@ -5,7 +5,7 @@ This is the private repository made by:
 - [Dana de Leeuw](https://www.linkedin.com/in/dana-de-leeuw/)
 - [Erine de Leeuw](https://www.linkedin.com/in/erine-de-leeuw-89a446b6/)
 
-The repository keeps all the programs, used for the calculations published in [A Novel Implicit Hybrid Article Recommender System with an Application on the Financial Article Database 'Bieb' from Knab](https://www.researchgate.net/publication/331716098_A_Novel_Implicit_Hybrid_Article_Recommender_System_with_an_Application_on_the_Financial_Article_Database_'Bieb'_from_Knab).  
+The repository keeps all the programs, used for the calculations published in [Implicit Hybrid Recommender System for Informative Articles](https://www.researchgate.net/publication/331716098_A_Novel_Implicit_Hybrid_Article_Recommender_System_with_an_Application_on_the_Financial_Article_Database_'Bieb'_from_Knab).  
 This readme will explain first the main algorithms and their inputs/outputs. Next the side-calculations, such as bias, are introduced.
 
 ## The main algorithm
